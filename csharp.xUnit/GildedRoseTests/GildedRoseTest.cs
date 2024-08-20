@@ -5,9 +5,7 @@ using GildedRoseKata;
 namespace GildedRoseTests;
 
 public class GildedRoseTest
-{
-    
-
+{  
     [Fact]
     // At the end of each day our system lowers both values for every item
     public void UpdateQuality_StandardItem_QualityDecreasesByOne()
@@ -136,6 +134,7 @@ public class GildedRoseTest
     [InlineData(1,10, 3)]
     [InlineData(1,5,4)]
     [InlineData(1,0,0)]
+    [InlineData(49,1,50)]
     public void UpdateQuality_BackstagePasses_QualityIncreasesAccordingToRules(int quality, int sellIn, int expectedQuality)
     {
         // Given
@@ -148,6 +147,7 @@ public class GildedRoseTest
         // Then
         Assert.Equal(expectedQuality, Items[0].Quality);
     }
+
     private static Item Createitem(string name, int sellIn, int quality)
     {
         return new Item { Name = name, SellIn = sellIn, Quality = quality };
