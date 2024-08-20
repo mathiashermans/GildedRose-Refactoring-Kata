@@ -12,17 +12,15 @@ public class GildedRoseTest
     {
         // Given
         var quality = 2;
-        IList<Item> Items = new List<Item> { Createitem("Item", 2, quality) };
-        GildedRose app = new GildedRose(Items);
+        IList<Item> items = new List<Item> { Createitem("Item", 2, quality) };
+        GildedRose app = new GildedRose(items);
 
         // When
         app.UpdateQuality();
 
         // Then
-        Assert.Equal(quality - 1, Items[0].Quality);
-    }
-
-    
+        Assert.Equal(quality - 1, items[0].Quality);
+    }    
 
     [Fact]
     // At the end of each day our system lowers both values for every item
@@ -31,14 +29,14 @@ public class GildedRoseTest
 
         // Given
         var sellIn = 2;
-        IList<Item> Items = new List<Item> { Createitem("Item", sellIn, 2) };
-        GildedRose app = new GildedRose(Items);
+        IList<Item> items = new List<Item> { Createitem("Item", sellIn, 2) };
+        GildedRose app = new GildedRose(items);
         
         // When
         app.UpdateQuality();
         
         // Then
-        Assert.Equal(sellIn - 1, Items[0].SellIn);
+        Assert.Equal(sellIn - 1, items[0].SellIn);
     }
 
     [Fact]
@@ -47,14 +45,14 @@ public class GildedRoseTest
     {
         // Given
         var quality = 2;
-        IList<Item> Items = new List<Item> { Createitem("Item", 0, quality) };
-        GildedRose app = new GildedRose(Items);
+        IList<Item> items = new List<Item> { Createitem("Item", 0, quality) };
+        GildedRose app = new GildedRose(items);
         
         // When
         app.UpdateQuality();
         
         // Then
-        Assert.Equal(quality - 2, Items[0].Quality);
+        Assert.Equal(quality - 2, items[0].Quality);
     }
 
     [Fact]
@@ -63,14 +61,14 @@ public class GildedRoseTest
     {
         // Given
         var quality = 0;
-        IList<Item> Items = new List<Item> { Createitem("Item", 0, quality) };
-        GildedRose app = new GildedRose(Items);
+        IList<Item> items = new List<Item> { Createitem("Item", 0, quality) };
+        GildedRose app = new GildedRose(items);
 
         // When
         app.UpdateQuality();
 
         // Then
-        Assert.Equal(quality, Items[0].Quality);
+        Assert.Equal(quality, items[0].Quality);
     }
 
 
@@ -80,14 +78,30 @@ public class GildedRoseTest
     {
         // Given
         var quality = 5;
-        IList<Item> Items = new List<Item> { Createitem("Aged Brie", 10, quality) };
-        GildedRose app = new GildedRose(Items);
+        IList<Item> items = new List<Item> { Createitem("Aged Brie", 10, quality) };
+        GildedRose app = new GildedRose(items);
         
         // When
         app.UpdateQuality();
         
         // Then
-        Assert.Equal(quality + 1, Items[0].Quality);
+        Assert.Equal(quality + 1, items[0].Quality);
+    }
+
+    [Fact]
+    // __"Aged Brie"__ actually increases in `Quality` the older it gets
+    public void UpdateQuality_AgedBrie_QualityIncreasesByTwoAfterExpiration()
+    {
+        // Given
+        var quality = 5;
+        IList<Item> items = new List<Item> { Createitem("Aged Brie", 0, quality) };
+        GildedRose app = new GildedRose(items);
+
+        // When
+        app.UpdateQuality();
+
+        // Then
+        Assert.Equal(quality + 2, items[0].Quality);
     }
 
     [Fact]
@@ -96,14 +110,14 @@ public class GildedRoseTest
     {
         // Given
         var quality = 50;
-        IList<Item> Items = new List<Item> { Createitem("Aged Brie", 10, quality) };
-        GildedRose app = new GildedRose(Items);
+        IList<Item> items = new List<Item> { Createitem("Aged Brie", 10, quality) };
+        GildedRose app = new GildedRose(items);
         
         // When
         app.UpdateQuality();
         
         // Then
-        Assert.Equal(quality, Items[0].Quality);
+        Assert.Equal(quality, items[0].Quality);
     }
 
     [Fact]
@@ -113,15 +127,15 @@ public class GildedRoseTest
         // Given
         var sellIn = 10;
         var quality = 5;
-        IList<Item> Items = new List<Item> { Createitem("Sulfuras, Hand of Ragnaros", sellIn, quality) };
-        GildedRose app = new GildedRose(Items);
+        IList<Item> items = new List<Item> { Createitem("Sulfuras, Hand of Ragnaros", sellIn, quality) };
+        GildedRose app = new GildedRose(items);
         
         // When
         app.UpdateQuality();
         
         // Then
-        Assert.Equal(quality, Items[0].Quality);
-        Assert.Equal(sellIn, Items[0].SellIn);
+        Assert.Equal(quality, items[0].Quality);
+        Assert.Equal(sellIn, items[0].SellIn);
     }
 
     [Theory]
@@ -138,14 +152,46 @@ public class GildedRoseTest
     public void UpdateQuality_BackstagePasses_QualityIncreasesAccordingToRules(int quality, int sellIn, int expectedQuality)
     {
         // Given
-        IList<Item> Items = new List<Item> { Createitem("Backstage passes to a TAFKAL80ETC concert", sellIn, quality) };
-        GildedRose app = new GildedRose(Items);
+        IList<Item> items = new List<Item> { Createitem("Backstage passes to a TAFKAL80ETC concert", sellIn, quality) };
+        GildedRose app = new GildedRose(items);
         
         // When
         app.UpdateQuality();
         
         // Then
-        Assert.Equal(expectedQuality, Items[0].Quality);
+        Assert.Equal(expectedQuality, items[0].Quality);
+    }
+
+    [Fact]
+    // __"Conjured"__ items degrade in `Quality` twice as fast as normal items
+    public void UpdateQuality_ConjuredItem_QualityDecreasesByTwo()
+    {
+        // Given
+        var quality = 4;
+        IList<Item> items = new List<Item> { Createitem("Conjured Item", 2, quality) };
+        GildedRose app = new GildedRose(items);
+
+        // When
+        app.UpdateQuality();
+
+        // Then
+        Assert.Equal(quality - 2, items[0].Quality);    
+    }
+
+    [Fact]
+    // __"Conjured"__ items degrade in `Quality` twice as fast as normal items
+    public void UpdateQuality_ConjuredItem_QualityDecreasesByFourAfterExpiration()
+    {
+        // Given
+        var quality = 4;
+        IList<Item> items = new List<Item> { Createitem("Conjured Item", 0, quality) };
+        GildedRose app = new GildedRose(items);
+
+        // When
+        app.UpdateQuality();
+
+        // Then
+        Assert.Equal(quality - 4, items[0].Quality);
     }
 
     private static Item Createitem(string name, int sellIn, int quality)
