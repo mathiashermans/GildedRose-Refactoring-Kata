@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GildedRoseKata.ItemTypes;
+﻿namespace GildedRoseKata.ItemTypes;
 public abstract class BaseItem : IUpdateQualityStrategy
 {
     protected const int MaxQuality = 50;

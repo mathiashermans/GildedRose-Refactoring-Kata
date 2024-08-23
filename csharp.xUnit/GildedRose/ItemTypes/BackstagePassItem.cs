@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GildedRoseKata.ItemTypes;
+﻿namespace GildedRoseKata.ItemTypes;
 public class BackstagePassItem : BaseItem
 {
     private const int FirstQualityIncreaseThreshold = 10;
