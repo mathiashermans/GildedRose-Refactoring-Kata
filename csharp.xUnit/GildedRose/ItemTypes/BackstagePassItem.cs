@@ -7,7 +7,7 @@ public class BackstagePassItem : BaseItem
     private const int SecondQualityIncreaseThreshold = 5;
 
 
-    public override void UpdateQuality(Item item)
+    public override void UpdateQualityAndSellIn(Item item)
     {
         if (IsExpired(item))
             ResetQualityToZero(item);

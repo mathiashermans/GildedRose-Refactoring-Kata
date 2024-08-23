@@ -17,7 +17,7 @@ public class GildedRose
         foreach(var item in Items)
         {
            var strategy = GetStrategy(item);
-            strategy.UpdateQuality(item);
+           strategy.UpdateQualityAndSellIn(item);
         }
     }
 

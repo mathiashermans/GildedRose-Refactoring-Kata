@@ -10,7 +10,7 @@ public abstract class BaseItem : IUpdateQualityStrategy
     protected const int MaxQuality = 50;
     protected const int MinQuality = 0;
 
-    public abstract void UpdateQuality(Item item);
+    public abstract void UpdateQualityAndSellIn(Item item);
 
     protected void DecreaseSellIn(Item item)
     {

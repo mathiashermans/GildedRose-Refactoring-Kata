@@ -1,7 +1,7 @@
 ﻿namespace GildedRoseKata.ItemTypes;
 public class AgedBrieItem : BaseItem
 {
-    public override void UpdateQuality(Item item)
+    public override void UpdateQualityAndSellIn(Item item)
     {
         IncreaseQuality(item);
         if (IsExpired(item))
