@@ -1,14 +1,12 @@
 ﻿namespace GildedRoseKata.ItemTypes;
-public class StandardItem : IUpdateQualityStrategy
+public class StandardItem : BaseItem
 {
-    public void UpdateQuality(Item item)
+    public override void UpdateQuality(Item item)
     {
-        if(item.Quality > 0)
-            item.Quality--;
-        
-        if(item.Quality > 0 && item.SellIn <= 0)
-            item.Quality--;
+        DecreaseQuality(item);
+        if (IsExpired(item))
+            DecreaseQuality(item);
 
-        item.SellIn--;
+        DecreaseSellIn(item);
     }
 }

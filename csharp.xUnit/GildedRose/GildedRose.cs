@@ -31,7 +31,7 @@ public class GildedRose
                 return new SulfurasItem();
             case "Backstage passes to a TAFKAL80ETC concert":
                 return new BackstagePassItem();
-            case "Conjured Item":
+            case var name when name.StartsWith("Conjured "):
                 return new ConjuredItem();
             default:
                 return new StandardItem();

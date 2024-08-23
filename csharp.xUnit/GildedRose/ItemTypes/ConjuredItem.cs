@@ -1,17 +1,12 @@
 ﻿namespace GildedRoseKata.ItemTypes;
-public class ConjuredItem : IUpdateQualityStrategy
+public class ConjuredItem : StandardItem
 {
-    public void UpdateQuality(Item item)
+    protected override void DecreaseQuality(Item item)
     {
-        if (item.Quality > 0)
-            item.Quality-= 2;
+        if (item.Quality > MinQuality)
+            item.Quality--;
 
-        if (item.Quality > 0 && item.SellIn <= 0)
-            item.Quality-= 4;
-
-        item.SellIn--;
-
-        if(item.Quality < 0)
-            item.Quality = 0;
+        if (item.Quality > MinQuality)
+            item.Quality--;
     }
 }

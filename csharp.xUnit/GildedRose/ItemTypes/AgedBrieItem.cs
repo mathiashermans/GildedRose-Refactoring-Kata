@@ -1,14 +1,12 @@
 ﻿namespace GildedRoseKata.ItemTypes;
-public class AgedBrieItem : IUpdateQualityStrategy
+public class AgedBrieItem : BaseItem
 {
-    public void UpdateQuality(Item item)
+    public override void UpdateQuality(Item item)
     {
-        if(item.Quality < 50)
-            item.Quality++;
+        IncreaseQuality(item);
+        if (IsExpired(item))
+            IncreaseQuality(item);
 
-        if (item.SellIn <= 0 && item.Quality < 50)
-            item.Quality++;
-
-        item.SellIn--;
+        DecreaseSellIn(item);
     }
 }
